@@ -27,19 +27,32 @@ def main():
     test_stop_index = 10
 
     # Iterate through the df:
-    for i in range(0, test_stop_index):
+    for i in range(0, total_rows):
 
-        # Alias variables:
-        new_directory_name = DROPBOX_FOLDER_PATH + "/" + str(df.at[1, "Dropbox folder"])
-        new_file_name = new_directory_name + "/" + str(df.at[0, "File name"] + ".pdf")
-        pdf_url = str(df.at[2, "Link"])
+        # Alias absolute paths based on os:
+        if os.name == "posix":
+            new_directory_name = (
+                DROPBOX_FOLDER_PATH + "/" + str(df.at[i, "Dropbox folder"])
+            )
+            new_file_name = (
+                new_directory_name + "/" + str(df.at[i, "File name"] + ".pdf")
+            )
+        else:
+            new_directory_name = (
+                DROPBOX_FOLDER_PATH + "\\" + str(df.at[i, "Dropbox folder"])
+            )
+            new_file_name = (
+                new_directory_name + "\\" + str(df.at[i, "File name"] + ".pdf")
+            )
+        pdf_url = str(df.at[i, "Link"])
 
         print(f"[*] Downloading file #{i}: {new_file_name}")
         response = requests.get(pdf_url)
 
         print(f"[*] Saving file #{i}: {new_file_name}")
-        if not os.path.exists(new_directory_name):
-            os.makedirs(new_directory_name)
+        condition = os.path.exists(new_directory_name)
+        if not condition:
+            os.mkdir(new_directory_name)
             save_pdf_file(response, new_file_name, i)
         else:
             save_pdf_file(response, new_file_name, i)
