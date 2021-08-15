@@ -24,6 +24,7 @@ def save_pdf_file(request_url, destination_path: str, file_name: str):
             file.write(http_response.content)
 
         print(f"[*] Successfully downloaded file: {destination_path}")
+        return True
     except Exception as e:
         print(
             f"[*] Couldn't write file to: {destination_path}. Are you sure the corresponding country code folder exists? Saving to error folder instead. Saving to a designated error folder instead."
@@ -41,6 +42,7 @@ def save_pdf_file(request_url, destination_path: str, file_name: str):
             with open(error_file_path, "wb") as file:
                 file.write(http_response.content)
         print(e)
+        return True
 
 
 def main():
