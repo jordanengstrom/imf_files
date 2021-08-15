@@ -31,21 +31,6 @@ def main():
 
     total_rows = len(df.index)
 
-    print("[*] Creating each country code directory...")
-    distinct_country_codes = df["Dropbox folder"].unique()
-
-    # Create all possible folders, then asynchronously download to each
-    # of them.
-    for country_code in distinct_country_codes:
-        # Determine new directory paths based on os:
-        if os.name == "posix":
-            new_directory_name = DROPBOX_FOLDER_PATH + "/" + str(country_code)
-        else:
-            new_directory_name = DROPBOX_FOLDER_PATH + "\\" + str(country_code)
-
-        if not os.path.exists(new_directory_name):
-            os.mkdir(new_directory_name)
-
     print("Launching concurrent file downloads...")
     futures = []
     with concurrent.futures.ThreadPoolExecutor() as executor:
