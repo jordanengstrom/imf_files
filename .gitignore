@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+.vscode/
+IMF_file_list.csv
+IMF_file_list.xlsx
